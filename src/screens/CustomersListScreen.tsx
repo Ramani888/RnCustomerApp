@@ -17,56 +17,56 @@ export default function CustomersListScreen({ navigation }: any) {
     return unsubscribe;
   }, [navigation]);
 
-    const renderCustomer = ({ item }: any) => (
-        <Card style={styles.card}>
-        <View style={styles.statusBadgeContainer}>
-            <Text
-            style={[
-                styles.statusBadge,
-                item.status === 'Must' ? styles.must : styles.debtFree,
-            ]}
-            >
-            {item.status}
-            </Text>
+  const renderCustomer = ({ item }: any) => (
+    <Card style={styles.card}>
+      <View style={styles.statusBadgeContainer}>
+        <Text
+        style={[
+            styles.statusBadge,
+            'Must' === 'Must' ? styles.must : styles.debtFree,
+        ]}
+        >
+        {'Must'}
+        </Text>
+      </View>
+
+      <Text style={styles.name}>{item.name}</Text>
+
+      <View style={styles.row}>
+        <Icon name="call-outline" size={18} color="#6b7280" />
+        <Text style={styles.text}>{item.phone}</Text>
+      </View>
+
+      <View style={styles.row}>
+        <Icon name="mail-outline" size={18} color="#6b7280" />
+        <Text style={styles.text}>{item.email}</Text>
+      </View>
+
+      <View style={styles.row}>
+        <Icon name="calculator-outline" size={18} color="#6b7280" />
+        <Text style={styles.text}>C.O.:</Text>
+        <Text style={styles.text}>{item.companyNumber}</Text>
+      </View>
+
+      <View style={styles.divider} />
+
+      <View style={styles.amountRow}>
+        <View>
+          <Text style={styles.label}>debt</Text>
+          <Text style={styles.debt}>₪{item.debt ?? 0}</Text>
         </View>
-
-        <Text style={styles.name}>{item.name}</Text>
-
-        <View style={styles.row}>
-            <Text style={styles.text}>{item.phone}</Text>
-            <Icon name="call-outline" size={18} color="#6b7280" />
+        <View>
+          <Text style={styles.label}>Total paid</Text>
+          <Text style={styles.paid}>₪{item.totalPaid ?? 0}</Text>
         </View>
+      </View>
 
-        <View style={styles.row}>
-            <Text style={styles.text}>{item.email}</Text>
-            <Icon name="mail-outline" size={18} color="#6b7280" />
-        </View>
-
-        <View style={styles.row}>
-            <Text style={styles.text}>{item.code}</Text>
-            <Text style={styles.text}>C.O.:</Text>
-            <Icon name="calculator-outline" size={18} color="#6b7280" />
-        </View>
-
-        <View style={styles.divider} />
-
-        <View style={styles.amountRow}>
-            <View>
-            <Text style={styles.label}>debt</Text>
-            <Text style={styles.debt}>₪{item.debt}</Text>
-            </View>
-            <View>
-            <Text style={styles.label}>Total paid</Text>
-            <Text style={styles.paid}>₪{item.totalPaid}</Text>
-            </View>
-        </View>
-
-        <TouchableOpacity style={styles.viewButton} onPress={() => navigation.navigate('CustomerDetail', { customerId: item.id })}>
-            <Text style={styles.viewText}>View customer</Text>
-            <Icon name="eye-outline" size={18} color="#000" />
-        </TouchableOpacity>
-        </Card>
-    );
+      <TouchableOpacity style={styles.viewButton} onPress={() => navigation.navigate('CustomerDetail', { customerId: item.id })}>
+        <Text style={styles.viewText}>View customer</Text>
+        <Icon name="eye-outline" size={18} color="#000" />
+      </TouchableOpacity>
+    </Card>
+  );
 
   return (
     <View style={styles.container}>
@@ -84,14 +84,23 @@ export default function CustomersListScreen({ navigation }: any) {
         </View>
       </View>
 
-      {/* FlatList */}
-      <FlatList
-        data={customers}
-        keyExtractor={(item) => String(item.id ?? '')}
-        renderItem={renderCustomer}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}
-      />
+      {/* No data message */}
+      {customers.length === 0 ? (
+        <View style={styles.noDataContainer}>
+          <Icon name="information-circle-outline" size={60} color="#8b5cf6" />
+          <Text style={styles.noDataText}>No customers found</Text>
+          <Text style={styles.noDataSubtext}>Add a new customer to get started</Text>
+        </View>
+      ) : (
+        /* FlatList */
+        <FlatList
+          data={customers}
+          keyExtractor={(item) => String(item.id ?? '')}
+          renderItem={renderCustomer}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 }
@@ -137,7 +146,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 6,
     marginVertical: 2,
   },
   divider: { height: 1, backgroundColor: '#e5e7eb', marginVertical: 10 },
@@ -162,4 +171,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   viewText: { fontWeight: '700', color: '#000', marginRight: 6 },
+  
+  // No data styles
+  noDataContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  noDataText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#374151',
+    marginTop: 12,
+  },
+  noDataSubtext: {
+    fontSize: 16,
+    color: '#6b7280',
+    marginTop: 8,
+    textAlign: 'center',
+  },
 });
