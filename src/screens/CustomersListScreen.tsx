@@ -26,7 +26,7 @@ export default function CustomersListScreen({ navigation }: any) {
             'Must' === 'Must' ? styles.must : styles.debtFree,
         ]}
         >
-        {'Must'}
+        {'חובה'}
         </Text>
       </View>
 
@@ -44,7 +44,7 @@ export default function CustomersListScreen({ navigation }: any) {
 
       <View style={styles.row}>
         <Icon name="calculator-outline" size={18} color="#6b7280" />
-        <Text style={styles.text}>C.O.:</Text>
+        <Text style={styles.text}>ח.פ.:</Text>
         <Text style={styles.text}>{item.companyNumber}</Text>
       </View>
 
@@ -52,17 +52,17 @@ export default function CustomersListScreen({ navigation }: any) {
 
       <View style={styles.amountRow}>
         <View>
-          <Text style={styles.label}>debt</Text>
+          <Text style={styles.label}>חוב</Text>
           <Text style={styles.debt}>₪{item.debt ?? 0}</Text>
         </View>
         <View>
-          <Text style={styles.label}>Total paid</Text>
+          <Text style={styles.label}>סה״כ שולם</Text>
           <Text style={styles.paid}>₪{item.totalPaid ?? 0}</Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.viewButton} onPress={() => navigation.navigate('CustomerDetail', { customerId: item.id })}>
-        <Text style={styles.viewText}>View customer</Text>
+        <Text style={styles.viewText}>צפה בלקוח</Text>
         <Icon name="eye-outline" size={18} color="#000" />
       </TouchableOpacity>
     </Card>
@@ -70,29 +70,29 @@ export default function CustomersListScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* כותרת */}
       <View style={styles.headerRow}>
         <TouchableOpacity style={styles.newCustomerButton} onPress={() => navigation.navigate('CustomerForm')}>
-          <Text style={styles.newCustomerText}>New customer</Text>
+          <Text style={styles.newCustomerText}>לקוח חדש</Text>
           <Icon name="add" size={20} color="#fff" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <Text style={styles.headerTitle}>Customers</Text>
+          <Text style={styles.headerTitle}>לקוחות</Text>
           <Text style={styles.headerSubtitle}>
-            Manage all your customers in one place
+            נהל את כל הלקוחות שלך במקום אחד
           </Text>
         </View>
       </View>
 
-      {/* No data message */}
+      {/* אין נתונים */}
       {customers.length === 0 ? (
         <View style={styles.noDataContainer}>
           <Icon name="information-circle-outline" size={60} color="#8b5cf6" />
-          <Text style={styles.noDataText}>No customers found</Text>
-          <Text style={styles.noDataSubtext}>Add a new customer to get started</Text>
+          <Text style={styles.noDataText}>לא נמצאו לקוחות</Text>
+          <Text style={styles.noDataSubtext}>הוסף לקוח חדש כדי להתחיל</Text>
         </View>
       ) : (
-        /* FlatList */
+        /* רשימה */
         <FlatList
           data={customers}
           keyExtractor={(item) => String(item.id ?? '')}
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   viewText: { fontWeight: '700', color: '#000', marginRight: 6 },
   
-  // No data styles
+  // סגנונות כשאין נתונים
   noDataContainer: {
     flex: 1,
     justifyContent: 'center',

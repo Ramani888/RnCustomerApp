@@ -17,21 +17,21 @@ const invoices = [
     toBePaid: "₪0",
     amount: "₪20,000",
     invoiceNumber: "INV-018593",
-    client: "Packer Sheffi",
+    client: "פאקר שפי",
   },
   {
     id: "2",
     toBePaid: "₪12,556",
     amount: "₪25,000",
     invoiceNumber: "INV-003630",
-    client: "Packer Sheffi",
+    client: "פאקר שפי",
   },
   {
     id: "3",
     toBePaid: "₪10,000",
     amount: "₪10,000",
     invoiceNumber: "INV-982098",
-    client: "Packer Sheffi",
+    client: "פאקר שפי",
   },
 ];
 
@@ -56,17 +56,17 @@ const CustomerDetailScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Header */}
+        {/* כותרת */}
         <View style={styles.header}>
-          <Text style={styles.hello}>hello</Text>
-          <Text style={styles.customerId}>69a628e7 Customer number:</Text>
+          <Text style={styles.hello}>שלום</Text>
+          <Text style={styles.customerId}>מספר לקוח: 69a628e7</Text>
 
           <TouchableOpacity style={styles.invoiceButton}>
-            <Text style={styles.invoiceText}>New invoice</Text>
+            <Text style={styles.invoiceText}>חשבונית חדשה</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Tabs */}
+        {/* לשוניות */}
         <View style={styles.tabContainer}>
           <TouchableOpacity onPress={() => setActiveTab("documents")}>
             <Text
@@ -75,7 +75,7 @@ const CustomerDetailScreen: React.FC = () => {
                 activeTab === "documents" ? styles.tabActive : styles.tabInactive,
               ]}
             >
-              Documents
+              מסמכים
             </Text>
           </TouchableOpacity>
 
@@ -86,44 +86,44 @@ const CustomerDetailScreen: React.FC = () => {
                 activeTab === "invoices" ? styles.tabActive : styles.tabInactive,
               ]}
             >
-              Invoices
+              חשבוניות
             </Text>
           </TouchableOpacity>
         </View>
 
-        {/* Documents (empty for now) */}
+        {/* מסמכים (ריק בינתיים) */}
         {activeTab === "documents" && (
           <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Documents Section</Text>
-            <Text style={{ color: "#666" }}>No documents available.</Text>
+            <Text style={styles.sectionTitle}>מדור מסמכים</Text>
+            <Text style={{ color: "#666" }}>אין מסמכים זמינים.</Text>
           </View>
         )}
 
-        {/* Invoices */}
+        {/* חשבוניות */}
         {activeTab === "invoices" && (
           <>
-            {/* Financial Review */}
+            {/* סקירה פיננסית */}
             <View style={styles.card}>
-              <Text style={styles.sectionTitle}>Financial review</Text>
+              <Text style={styles.sectionTitle}>סקירה פיננסית</Text>
 
               <View style={styles.row}>
                 <Text style={styles.total}>₪0</Text>
-                <Text style={styles.label}>Total:</Text>
+                <Text style={styles.label}>סה״כ:</Text>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.total, { color: "green" }]}>₪0</Text>
-                <Text style={styles.label}>Paid:</Text>
+                <Text style={styles.label}>שולם:</Text>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.total, { color: "red" }]}>₪0</Text>
-                <Text style={styles.label}>Balance:</Text>
+                <Text style={styles.label}>יתרה:</Text>
               </View>
             </View>
 
-            {/* Contact Info */}
+            {/* פרטי קשר */}
             <View style={styles.card}>
-              <Text style={styles.sectionTitle}>Contact information</Text>
-              <Text style={styles.contactName}>hello</Text>
+              <Text style={styles.sectionTitle}>פרטי קשר</Text>
+              <Text style={styles.contactName}>שלום</Text>
 
               <View style={styles.contactRow}>
                 <Ionicons name="call-outline" size={18} color="black" />
@@ -137,56 +137,56 @@ const CustomerDetailScreen: React.FC = () => {
 
               <View style={styles.contactRow}>
                 <Ionicons name="location-outline" size={18} color="black" />
-                <Text style={styles.contactText}>Jerusalem</Text>
+                <Text style={styles.contactText}>ירושלים</Text>
               </View>
 
-              <Text style={styles.link}>Click to view full details</Text>
+              <Text style={styles.link}>לחץ לצפייה בפרטים מלאים</Text>
             </View>
 
-            {/* Invoices Section */}
+            {/* חלק החשבוניות */}
             <View style={styles.card}>
-              <Text style={styles.sectionTitle}>Invoices</Text>
+              <Text style={styles.sectionTitle}>חשבוניות</Text>
 
-              {/* Search */}
+              {/* חיפוש */}
               <View style={styles.searchBox}>
                 <TextInput
-                  placeholder="Search by customer name or invoice number"
+                  placeholder="חפש לפי שם לקוח או מספר חשבונית"
                   style={styles.input}
                 />
                 <Ionicons name="search-outline" size={20} color="#999" />
               </View>
 
-              {/* Filter buttons */}
+              {/* כפתורי סינון */}
               <View style={styles.filterRow}>
                 <TouchableOpacity style={styles.filterBtn}>
-                  <Text style={styles.filterText}>Awaiting payment</Text>
+                  <Text style={styles.filterText}>ממתין לתשלום</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.filterBtn}>
-                  <Text style={styles.filterText}>Partial payment</Text>
+                  <Text style={styles.filterText}>תשלום חלקי</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.filterBtn}>
-                  <Text style={styles.filterText}>New for payment</Text>
+                  <Text style={styles.filterText}>חדש לתשלום</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.filterBtnActive}>
                   <Text style={[styles.filterText, { color: "#000" }]}>
-                    Full payment
+                    תשלום מלא
                   </Text>
                 </TouchableOpacity>
               </View>
 
-              {/* Table header */}
+              {/* כותרת טבלה */}
               <View style={styles.tableHeader}>
-                <Text style={[styles.headerCell, { flex: 0.8 }]}>updating</Text>
-                <Text style={[styles.headerCell, { flex: 1 }]}>to be paid</Text>
-                <Text style={[styles.headerCell, { flex: 1 }]}>amount</Text>
+                <Text style={[styles.headerCell, { flex: 0.8 }]}>עדכון</Text>
+                <Text style={[styles.headerCell, { flex: 1 }]}>לתשלום</Text>
+                <Text style={[styles.headerCell, { flex: 1 }]}>סכום</Text>
                 <Text style={[styles.headerCell, { flex: 1.2 }]}>
-                  Invoice number
+                  מספר חשבונית
                 </Text>
-                <Text style={[styles.headerCell, { flex: 1.2 }]}>client</Text>
+                <Text style={[styles.headerCell, { flex: 1.2 }]}>לקוח</Text>
                 <Text style={styles.headerCell}></Text>
               </View>
 
-              {/* Invoice list */}
+              {/* רשימת חשבוניות */}
               <FlatList
                 data={invoices}
                 renderItem={renderInvoice}

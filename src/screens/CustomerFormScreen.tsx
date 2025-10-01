@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  I18nManager,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Formik } from 'formik';
@@ -17,16 +18,16 @@ import { getData, saveData } from '../utils/storage';
 
 // Define validation schema
 const CustomerValidationSchema = Yup.object().shape({
-  name: Yup.string().required('Company name is required'),
-  companyNumber: Yup.string().matches(/^\d+$/, 'Must be only digits').required('Company number is required'),
-  address: Yup.string().required('Address is required'),
-  email: Yup.string().email('Invalid email format').required('Email is required'),
+  name: Yup.string().required('שם חברה נדרש'),
+  companyNumber: Yup.string().matches(/^\d+$/, 'חייב להיות ספרות בלבד').required('מספר חברה נדרש'),
+  address: Yup.string().required('כתובת נדרשת'),
+  email: Yup.string().email('פורמט אימייל לא תקין').required('דוא"ל נדרש'),
   officePhone: Yup.string()
-    .matches(/^[0-9-]+$/, 'Invalid phone format')
-    .min(7, 'Phone number too short').required('Office phone is required'),
+    .matches(/^[0-9-]+$/, 'פורמט טלפון לא תקין')
+    .min(7, 'מספר טלפון קצר מדי').required('טלפון משרד נדרש'),
   additionalPhone: Yup.string()
-    .matches(/^[0-9-]*$/, 'Invalid phone format')
-    .required('Additional phone is required'),
+    .matches(/^[0-9-]*$/, 'פורמט טלפון לא תקין')
+    .required('טלפון נוסף נדרש'),
   notes: Yup.string(),
 });
 
@@ -58,12 +59,12 @@ export default function CustomerFormScreen({ navigation }: any) {
       existing.push(customer);
       await saveData('customers', existing);
       
-      Alert.alert('Success', 'Customer added successfully');
+      Alert.alert('הצלחה', 'לקוח נוסף בהצלחה');
       resetForm();
       navigation.goBack();
     } catch (error) {
       console.error('Error saving customer data:', error);
-      Alert.alert('Error', 'Failed to save customer data');
+      Alert.alert('שגיאה', 'נכשל בשמירת נתוני לקוח');
     }
   };
 
@@ -82,15 +83,21 @@ export default function CustomerFormScreen({ navigation }: any) {
           {/* Company Name */}
           <View style={styles.labelRow}>
             <Icon name="business-outline" size={18} color="#6b7280" />
-            <Text style={styles.label}>Company name</Text>
+            <Text style={styles.label}>שם חברה</Text>
           </View>
           <TextInput
-            placeholder="Enter company name"
+            placeholder="הזן שם חברה"
             placeholderTextColor="#6b7280"
             value={values.name}
             onChangeText={handleChange('name')}
             onBlur={handleBlur('name')}
-            style={[styles.input, errors.companyNumber && touched.companyNumber ? styles.inputError : null]}
+            style={[
+              styles.input, 
+              errors.name && touched.name ? styles.inputError : null,
+              styles.rtlInput // Always apply RTL styling
+            ]}
+            textAlign="right"
+            // writingDirection="rtl"
           />
           {errors.name && touched.name && (
             <Text style={styles.errorText}>{errors.name}</Text>
@@ -99,7 +106,7 @@ export default function CustomerFormScreen({ navigation }: any) {
           {/* Company Number */}
           <View style={styles.labelRow}>
             <Icon name="card-outline" size={18} color="#6b7280" />
-            <Text style={styles.label}>A.M./C.P.</Text>
+            <Text style={styles.label}>ע.מ./ח.פ.</Text>
           </View>
           <TextInput
             placeholder="123456789"
@@ -107,8 +114,13 @@ export default function CustomerFormScreen({ navigation }: any) {
             value={values.companyNumber}
             onChangeText={handleChange('companyNumber')}
             onBlur={handleBlur('companyNumber')}
-            style={[styles.input, errors.companyNumber && touched.companyNumber ? styles.inputError : null]}
+            style={[
+              styles.input, 
+              errors.companyNumber && touched.companyNumber ? styles.inputError : null,
+              styles.rtlInput
+            ]}
             keyboardType="numeric"
+            textAlign="right"
           />
           {errors.companyNumber && touched.companyNumber && (
             <Text style={styles.errorText}>{errors.companyNumber}</Text>
@@ -117,15 +129,20 @@ export default function CustomerFormScreen({ navigation }: any) {
           {/* Address */}
           <View style={styles.labelRow}>
             <Icon name="location-outline" size={18} color="#6b7280" />
-            <Text style={styles.label}>address</Text>
+            <Text style={styles.label}>כתובת</Text>
           </View>
           <TextInput
-            placeholder="Street, city"
+            placeholder="רחוב, עיר"
             placeholderTextColor="#6b7280"
             value={values.address}
             onChangeText={handleChange('address')}
             onBlur={handleBlur('address')}
-            style={[styles.input, errors.address && touched.address ? styles.inputError : null]}
+            style={[
+              styles.input, 
+              errors.address && touched.address ? styles.inputError : null,
+              styles.rtlInput
+            ]}
+            textAlign="right"
           />
           {errors.address && touched.address && (
             <Text style={styles.errorText}>{errors.address}</Text>
@@ -142,8 +159,13 @@ export default function CustomerFormScreen({ navigation }: any) {
             value={values.email}
             onChangeText={handleChange('email')}
             onBlur={handleBlur('email')}
-            style={[styles.input, errors.email && touched.email ? styles.inputError : null]}
+            style={[
+              styles.input, 
+              errors.email && touched.email ? styles.inputError : null,
+              styles.rtlInput
+            ]}
             keyboardType="email-address"
+            textAlign="right"
           />
           {errors.email && touched.email && (
             <Text style={styles.errorText}>{errors.email}</Text>
@@ -152,7 +174,7 @@ export default function CustomerFormScreen({ navigation }: any) {
           {/* Office Phone */}
           <View style={styles.labelRow}>
             <Icon name="call-outline" size={18} color="#6b7280" />
-            <Text style={styles.label}>Office phone</Text>
+            <Text style={styles.label}>טלפון משרד</Text>
           </View>
           <TextInput
             placeholder="03-1234567"
@@ -160,8 +182,13 @@ export default function CustomerFormScreen({ navigation }: any) {
             value={values.officePhone}
             onChangeText={handleChange('officePhone')}
             onBlur={handleBlur('officePhone')}
-            style={[styles.input, errors.officePhone && touched.officePhone ? styles.inputError : null]}
+            style={[
+              styles.input, 
+              errors.officePhone && touched.officePhone ? styles.inputError : null,
+              styles.rtlInput
+            ]}
             keyboardType="phone-pad"
+            textAlign="right"
           />
           {errors.officePhone && touched.officePhone && (
             <Text style={styles.errorText}>{errors.officePhone}</Text>
@@ -170,7 +197,7 @@ export default function CustomerFormScreen({ navigation }: any) {
           {/* Additional Phone */}
           <View style={styles.labelRow}>
             <Icon name="call-outline" size={18} color="#6b7280" />
-            <Text style={styles.label}>Additional phone</Text>
+            <Text style={styles.label}>טלפון נוסף</Text>
           </View>
           <TextInput
             placeholder="050-1234567"
@@ -178,8 +205,13 @@ export default function CustomerFormScreen({ navigation }: any) {
             value={values.additionalPhone}
             onChangeText={handleChange('additionalPhone')}
             onBlur={handleBlur('additionalPhone')}
-            style={[styles.input, errors.additionalPhone && touched.additionalPhone ? styles.inputError : null]}
+            style={[
+              styles.input, 
+              errors.additionalPhone && touched.additionalPhone ? styles.inputError : null,
+              styles.rtlInput
+            ]}
             keyboardType="phone-pad"
+            textAlign="right"
           />
           {errors.additionalPhone && touched.additionalPhone && (
             <Text style={styles.errorText}>{errors.additionalPhone}</Text>
@@ -187,16 +219,23 @@ export default function CustomerFormScreen({ navigation }: any) {
 
           {/* Notes */}
           <View style={styles.labelRow}>
-            <Text style={styles.label}>Notes</Text>
+            <Text style={styles.label}>הערות</Text>
           </View>
           <TextInput
-            placeholder="Additional information"
+            placeholder="מידע נוסף"
             placeholderTextColor="#6b7280"
             value={values.notes}
             onChangeText={handleChange('notes')}
             onBlur={handleBlur('notes')}
-            style={[styles.input, errors.notes && touched.notes ? styles.inputError : null, styles.textArea]}
+            style={[
+              styles.input, 
+              errors.notes && touched.notes ? styles.inputError : null, 
+              styles.textArea,
+              styles.rtlInput
+            ]}
             multiline
+            textAlign="right"
+            textAlignVertical="top"
           />
           {errors.notes && touched.notes && (
             <Text style={styles.errorText}>{errors.notes}</Text>
@@ -208,14 +247,14 @@ export default function CustomerFormScreen({ navigation }: any) {
               style={styles.cancelButton}
               onPress={() => navigation.goBack()}
             >
-              <Text style={styles.cancelText}>Cancellation</Text>
+              <Text style={styles.cancelText}>ביטול</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.addButton}
               onPress={handleSubmit}
             >
-              <Text style={styles.addText}>Add a customer</Text>
+              <Text style={styles.addText}>הוסף לקוח</Text>
               <Icon name="add" size={20} color="#fff" />
             </TouchableOpacity>
           </View>
@@ -229,7 +268,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
 
   labelRow: {
-    flexDirection: 'row',
+    flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
     gap: 6,
     marginTop: 10,
     alignItems: 'center',
@@ -237,12 +276,14 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: '700',
     color: '#111827',
+    textAlign: I18nManager.isRTL ? 'right' : 'left',
   },
   sectionLabel: {
     marginTop: 18,
     marginBottom: 6,
     fontWeight: '700',
     color: '#111827',
+    textAlign: I18nManager.isRTL ? 'right' : 'left',
   },
 
   input: {
@@ -254,10 +295,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#111827',
     marginTop: 6,
+    direction: I18nManager.isRTL ? 'rtl' : 'ltr',
+    textAlign: I18nManager.isRTL ? 'right' : 'left',
+  },
+  rtlInput: {
+    writingDirection: 'rtl',
+    textAlign: 'right',
+    textAlignVertical: 'center',
   },
   focusedInput: {
     borderColor: '#8b5cf6',
     borderWidth: 2,
+    direction: I18nManager.isRTL ? 'rtl' : 'ltr',
+    textAlign: I18nManager.isRTL ? 'right' : 'left',
   },
   inputError: {
     borderColor: '#ef4444',
@@ -267,13 +317,15 @@ const styles = StyleSheet.create({
     color: '#ef4444',
     fontSize: 12,
     marginTop: 4,
-    marginLeft: 4,
+    marginLeft: I18nManager.isRTL ? 0 : 4,
+    marginRight: I18nManager.isRTL ? 4 : 0,
+    textAlign: I18nManager.isRTL ? 'right' : 'left',
   },
 
   textArea: { height: 100, textAlignVertical: 'top' },
 
   buttonRow: {
-    flexDirection: 'row',
+    flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     marginTop: 30,
   },
@@ -284,28 +336,36 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
-    marginRight: 8,
+    marginRight: I18nManager.isRTL ? 0 : 8,
+    marginLeft: I18nManager.isRTL ? 8 : 0,
   },
   cancelText: { fontWeight: '700', color: '#000' },
 
   addButton: {
     flex: 1,
     backgroundColor: '#8b5cf6',
-    flexDirection: 'row',
+    flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
     paddingVertical: 14,
-    marginLeft: 8,
+    marginLeft: I18nManager.isRTL ? 0 : 8,
+    marginRight: I18nManager.isRTL ? 8 : 0,
   },
   addText: {
     color: '#fff',
     fontWeight: '700',
-    marginRight: 6,
+    marginRight: I18nManager.isRTL ? 0 : 6,
+    marginLeft: I18nManager.isRTL ? 6 : 0,
   },
-  inputIcon: { position: 'absolute', right: 16, top: 16 },
+  inputIcon: { 
+    position: 'absolute', 
+    right: I18nManager.isRTL ? undefined : 16,
+    left: I18nManager.isRTL ? 16 : undefined,
+    top: 16 
+  },
   row: {
-    flexDirection: 'row',
+    flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#e5e7eb',
